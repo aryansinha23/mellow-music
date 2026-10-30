@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mellow – Your face sets the mood. AI finds the music.</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@500;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06130f;--bg2:#12382d;--card:rgba(230,255,244,.07);--bd:rgba(160,220,190,.22);--tx:#eefaf3;--mu:#9cc3b0;--ac:#6fcf9d;--ac2:#a8e6c3;--gold:#e9d8a6}
+:root[data-theme="light"]{--bg:#f3f8f4;--bg2:#d4eadb;--card:rgba(255,255,255,.75);--bd:rgba(40,110,80,.22);--tx:#16372b;--mu:#4d7a66}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;font-family:Poppins,system-ui,sans-serif;color:var(--tx);background:radial-gradient(circle at 20% 0,var(--bg2),var(--bg) 65%) fixed;transition:background .8s;padding-top:env(safe-area-inset-top);overflow-x:hidden}
+#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+#hearts span{position:absolute;bottom:-40px;opacity:0;animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.7}100%{transform:translateY(-115vh) rotate(40deg);opacity:0}}
+header,main,footer{position:relative;z-index:1}
+header{display:flex;align-items:center;gap:8px;padding:12px 18px;flex-wrap:wrap;backdrop-filter:blur(8px)}
+.logo{font-family:"Dancing Script",cursive;font-size:1.8rem;font-weight:700;cursor:pointer;margin-right:auto;color:var(--ac2)}
+button,select,input{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:9px 16px;cursor:pointer;backdrop-filter:blur(10px);transition:.2s}
+button:hover{border-color:var(--ac);transform:translateY(-1px)}
+button.pri{background:linear-gradient(90deg,var(--ac),#3fae86);border:0;color:#06241a;font-weight:600;box-shadow:0 6px 22px rgba(60,170,120,.35)}
+button.big{padding:15px 28px;font-size:1.05rem}
+input{cursor:text;border-radius:14px}
+main{max-width:1200px;margin:auto;padding:0 18px 30px}
+.view{display:none}.view.on{display:block;animation:in .5s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.hero{text-align:center;padding:44px 0 10px}
+.beat{font-size:4rem;display:inline-block;animation:beat 1.4s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.15)}}
+h1{font-family:"Playfair Display",serif;font-size:clamp(2.2rem,7vw,4rem);margin:.15em 0}
+h1 em{font-family:"Dancing Script",cursive;color:var(--ac2);font-weight:700}
+.tag{font-family:"Dancing Script",cursive;font-size:1.6rem;color:var(--gold);margin:0 0 6px}
+.hero p.d{color:var(--mu);max-width:580px;margin:0 auto 22px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:34px 0 0;text-align:center}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:18px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:18px;backdrop-filter:blur(16px);box-shadow:0 10px 40px rgba(0,0,0,.18)}
+.tile{cursor:pointer;transition:.25s}.tile:hover{transform:translateY(-4px);border-color:var(--ac)}
+.tile b{display:block;font-size:1.8rem}.tile small,.note{color:var(--mu)}.note{font-size:.82rem}
+.how .card b{font-size:1.5rem;display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:900px){.grid,.bottom{grid-template-columns:1fr!important}}
+h3{font-family:"Playfair Display",serif;margin:.1em 0 .6em;font-size:1.25rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+video{width:100%;border-radius:18px;background:#000;aspect-ratio:4/3;object-fit:cover;transform:scaleX(-1);border:2px solid var(--bd)}
+.stage{position:relative;line-height:0}.stage canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);pointer-events:none}.badge{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:8px;font-size:.78rem;line-height:1.3;background:rgba(0,0,0,.6);color:#fff;border:1px solid var(--ac)}
+.status{font-size:.9rem;color:var(--mu);min-height:1.4em;margin-top:8px}
+.emoji{font-size:7rem;text-align:center;line-height:1.1;filter:drop-shadow(0 8px 24px var(--ac))}
+.pop{animation:pop .6s}
+@keyframes pop{0%{transform:scale(.3) rotate(-15deg)}70%{transform:scale(1.18)}100%{transform:scale(1)}}
+.emo{text-align:center;font-size:1.5rem;font-weight:600;letter-spacing:.12em}
+.meter{height:10px;border-radius:9px;background:var(--bd);overflow:hidden;margin:8px 0}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--gold));transition:width .5s}
+.quote{font-family:"Dancing Script",cursive;font-size:1.45rem;text-align:center;color:var(--gold);margin:8px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chips button{padding:6px 12px;font-size:.85rem}
+.chips button.sel{background:var(--ac);border-color:var(--ac);color:#06241a}
+.rec{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}.rec:last-child{border:0}
+.rec .t{flex:1;min-width:0}.rec b{display:block;font-weight:500}.rec small{color:var(--mu)}
+.liked{color:#f08a7a;border-color:#f08a7a}
+.art{width:110px;height:110px;border-radius:22px;background:linear-gradient(135deg,var(--ac),#3fae86);display:grid;place-items:center;font-size:3rem;flex:none;box-shadow:0 8px 28px rgba(60,170,120,.4)}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.tl{display:flex;align-items:flex-end;gap:5px;height:100px;overflow-x:auto;padding-bottom:4px}
+.tl div{flex:0 0 26px;border-radius:8px 8px 0 0;background:linear-gradient(var(--ac),var(--gold));text-align:center;font-size:.85rem}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;border:1px solid var(--bd);font-size:.78rem;margin:2px}
+footer{text-align:center;padding:20px;color:var(--mu);font-size:.85rem}
+</style></head><body>
+<div id="hearts"></div>
+<header>
+  <div class="logo" onclick="go('home')">🌿 Mellow</div>
+  <button onclick="go('home')">Home</button><button onclick="go('app')">Dashboard</button><button onclick="go('about')">About</button><button onclick="go('privacy')">Privacy</button>
+  <button id="themeBtn" aria-label="Toggle theme">🌙</button>
+</header>
+<main>
+<section class="view" id="v-home">
+  <div class="hero">
+    <div class="beat">🌿</div>
+    <p class="tag">Your face sets the mood. AI finds the music.</p>
+    <h1><em>Mellow</em></h1>
+    <p class="d" id="greet">Let your smile, your sigh or your sparkle choose the soundtrack. Mellow reads your facial expression and finds songs that fit the way you feel right now.</p>
+    <div class="row" style="justify-content:center"><input id="name" placeholder="Your name (optional) 🌱" maxlength="20" style="max-width:240px"></div>
+    <div class="btns">
+      <button class="pri big" onclick="go('app');startCam()">📷 Start Camera</button>
+      <button class="big" onclick="go('app')">🎧 Open Dashboard</button>
+      <button class="big" onclick="go('app');setTimeout(()=>$('manual').scrollIntoView({block:'center'}),150)">💞 Pick Mood Manually</button>
+    </div>
+  </div>
+  <div class="how">
+    <div class="card"><b>📷</b>Webcam</div><div class="card"><b>🧠</b>Face + Expression</div><div class="card"><b>😊</b>Emotion + Emoji</div><div class="card"><b>🎶</b>Music Match</div><div class="card"><b>▶</b>YouTube</div>
+  </div>
+  <div class="tiles">
+    <div class="card tile" onclick="go('app')"><b>🎧</b>Music Dashboard<br><small>Emotion, emoji, player and picks</small></div>
+    <div class="card tile" onclick="calm()"><b>🍃</b>Calm Mode<br><small>One tap for soft lo-fi</small></div>
+    <div class="card tile" onclick="go('app');setTimeout(()=>$('langChips').scrollIntoView({block:'center'}),150)"><b>🌐</b>Choose Language<br><small>Hindi · English · Punjabi · Haryanvi · Mix</small></div>
+    <div class="card tile" onclick="go('app');setTimeout(()=>$('timeline').scrollIntoView({block:'center'}),150)"><b>📈</b>Mood Timeline<br><small>Your session in hearts</small></div>
+    <div class="card tile" onclick="go('about')"><b>🤖</b>About the AI<br><small>How it works</small></div>
+    <div class="card tile" onclick="go('privacy')"><b>🔒</b>Privacy<br><small>Frames never leave your device</small></div>
+  </div>
+</section>
+
+<section class="view" id="v-app">
+  <h3 id="hello" style="font-size:1.6rem;text-align:center"></h3>
+  <div class="grid">
+    <div class="card">
+      <h3>📷 Live camera</h3>
+      <div class="stage"><video id="cam" autoplay muted playsinline></video><canvas id="ov"></canvas><span class="badge" id="badge">Camera off</span></div>
+      <div class="status" id="status">Camera is off.</div>
+      <div class="row"><button class="pri" onclick="startCam()">Start Camera</button><button onclick="stopCam()">⏹ Stop</button><button onclick="flip()">🔄 Switch</button><button onclick="$('file').click()">📎 Attach photo</button><input id="file" type="file" accept="image/*" hidden onchange="fromPhoto(this)"></div>
+      <div class="note">🔒 Camera processing is used only for real-time emotion analysis. Do not store or upload camera frames unless explicitly enabled.</div>
+    </div>
+    <div class="card">
+      <h3>🌿 Detected emotion</h3>
+      <div class="emoji" id="emoji">😐</div>
+      <div class="emo" id="emoName">NEUTRAL</div>
+      <div class="row" style="justify-content:space-between"><span>Confidence</span><b id="confTxt">0%</b></div>
+      <div class="meter"><i id="conf"></i></div>
+      <div class="quote" id="quote">“Music begins where words end.”</div>
+      <p id="msg" style="text-align:center;margin:4px 0">Start the camera or pick a mood below.</p>
+      <div id="manual" style="margin-top:10px"><div class="note">Pick a mood manually (also the fallback if the model can’t load):</div><div class="chips" id="manChips"></div></div>
+      <p class="note">Describes a facial expression only, not a diagnosis of mental health.</p>
+    </div>
+    <div class="card">
+      <h3>🎯 Your taste</h3>
+      <div class="note">Language</div><div class="chips" id="langChips"></div>
+      <div class="note" style="margin-top:10px">Genre</div><div class="chips" id="genreChips"></div>
+      <h3 style="margin-top:16px">Recommended</h3>
+      <div id="recs"></div>
+      <div class="row"><button onclick="refresh(true)">🔄 Refresh</button><button onclick="brave()">🦁 Search on Brave</button></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="card">
+      <h3>🎵 Player</h3>
+      <div class="row" style="flex-wrap:nowrap"><div class="art" id="art">🎶</div>
+        <div style="min-width:0"><b id="pTitle" style="font-size:1.1rem">—</b><div id="pArtist" class="note"></div><div id="pMeta" class="note"></div></div></div>
+      <div class="row">
+        <button onclick="step(-1)" title="Previous (P)">⏮</button>
+        <button class="pri" onclick="openYT()" title="Enter">▶ Play on YouTube</button>
+        <button onclick="step(1)" title="Next (N)">⏭</button>
+        <button onclick="like()" title="Like (L)">❤️ Like</button>
+        <button onclick="skip()" title="Skip (S)">⏭ Skip</button>
+      </div>
+      <div class="note" id="pNote">Play opens a YouTube search in a new tab, so playback, volume and progress live on YouTube. Nothing is simulated here. Shortcuts: P / N / L / S / Enter.</div>
+    </div>
+    <div class="card" id="timeline">
+      <h3>📈 Mood timeline</h3>
+      <div class="tl" id="tl"></div>
+      <div id="hist" class="note" style="max-height:100px;overflow:auto;margin-top:8px"></div>
+      <div id="stats" style="margin-top:6px"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>💌 For you, based on your mood</h3><div id="foryou"></div></div>
+</section>
+
+<section class="view" id="v-about">
+  <div class="card" style="max-width:760px;margin:26px auto">
+    <h3>🤖 How Mellow works</h3>
+    <p>1. Your webcam stream is read inside the browser.<br>2. A small neural network (face-api.js, TinyFaceDetector + expression model) finds your face and scores seven expressions.<br>3. Results are smoothed over about 8 frames and only accepted when confidence is at least 55%, so the emotion doesn’t flicker.<br>4. The recommendation engine mixes emotion, language, genre and your likes and skips.<br>5. It builds a YouTube search such as “hindi happy dance songs”.</p>
+    <p class="note">Built as a college AI/ML project. The model reads expressions, not feelings, and can be wrong.</p>
+    <button class="pri" onclick="go('app')">Try it 🌿</button>
+  </div>
+</section>
+
+<section class="view" id="v-privacy">
+  <div class="card" style="max-width:760px;margin:26px auto">
+    <h3>🔒 Privacy</h3>
+    <p>Camera frames are processed in your browser. They are never stored, recorded or uploaded by this app. “Stop Camera” ends the stream and the analysis immediately.</p>
+    <p>Likes, skips, your name and the mood history live only in this session and disappear on reload.</p>
+    <p>YouTube and Brave open as ordinary search links in a new tab. There is no scraping and no tracking.</p>
+    <button class="pri" onclick="go('home')">Back home</button>
+  </div>
+</section>
+</main>
+<footer>Made with 🌿 · Mellow</footer>
+
+<script>
+// ---------- config (host the weights folder yourself and change this for offline use) ----------
+const MODEL_URL="https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.2/weights";
+const EMO={
+ happy:{e:"😊",c:"#f0c75e",m:"Your mood seems positive today.",q:"Happiness looks beautiful on you."},
+ sad:{e:"😢",c:"#7fa8d9",m:"You seem a little low. Here are some relaxing tracks.",q:"Even the rain makes beautiful music."},
+ angry:{e:"😠",c:"#e07a6a",m:"You look tense. Here is something to help you unwind.",q:"Breathe in, let the melody take it out."},
+ neutral:{e:"😐",c:"#8fd0b0",m:"You look calm and balanced.",q:"Quiet moments deserve a soft song."},
+ fear:{e:"😨",c:"#a39bd6",m:"You look uneasy. Here are some calming tracks.",q:"You are safe here. Let the music hold you."},
+ surprise:{e:"😲",c:"#f0a56a",m:"You look surprised! Something fun and fresh coming up.",q:"Life loves a beautiful plot twist."},
+ disgust:{e:"🤢",c:"#9ccc7a",m:"Not a great moment? Here is something positive.",q:"A good song can turn the whole day around."}};
+const CATS={happy:["Energetic","Dance","Feel-good"],sad:["Calm","Emotional","Relaxing"],angry:["Calm","Powerful","Stress-relieving"],neutral:["Chill","Lo-fi","Balanced"],surprise:["Energetic","Fun","Trending"],fear:["Calm","Relaxing"],disgust:["Calm","Positive"]};
+const LANGS=["Hindi 🇮🇳","English 🇬🇧","Punjabi","Haryanvi","Mix 🎵"];
+const GENRES=["All","Bollywood","Pop","Rock","Lo-fi","Classical","Hip-Hop","Romantic","Party","Folk","Devotional","Trending"];
+const FA={happy:"happy",sad:"sad",angry:"angry",neutral:"neutral",fearful:"fear",surprised:"surprise",disgusted:"disgust"};
+const S={emo:"neutral",conf:0,lang:"Hindi",genre:"All",recs:[],idx:0,w:{},hist:[],buf:[],stream:null,timer:null,model:false,liked:new Set(),name:""};
+const $=id=>document.getElementById(id);
+const L=l=>l.split(" ")[0];
+// ---------- floating hearts ----------
+(function(){const h=$("hearts"),s=["🍃","🌿","🌸","✨","🍂","🌱"];
+ for(let i=0;i<18;i++){const e=document.createElement("span");e.textContent=s[i%s.length];
+  e.style.left=Math.random()*100+"%";e.style.fontSize=(12+Math.random()*22)+"px";
+  e.style.animationDuration=(9+Math.random()*12)+"s";e.style.animationDelay=(-Math.random()*20)+"s";h.appendChild(e)}})();
+// ---------- routing ----------
+function go(v){location.hash=v}
+function route(){const v=["home","app","about","privacy"].includes(location.hash.slice(1))?location.hash.slice(1):"home";
+ document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+v));window.scrollTo(0,0)}
+addEventListener("hashchange",route);
+$("themeBtn").onclick=()=>{const r=document.documentElement,l=r.dataset.theme==="light";r.dataset.theme=l?"dark":"light";$("themeBtn").textContent=l?"🌙":"☀️"};
+$("name").oninput=e=>{S.name=e.target.value.trim();hello()};
+function hello(){$("hello").textContent=S.name?`Hello, ${S.name} 🌿 let’s find your song`:""}
+function calm(){S.genre="Lo-fi";go("app");drawChips();refresh()}
+// ---------- chips ----------
+function chips(id,arr,get,set){const el=$(id);el.innerHTML="";arr.forEach(x=>{const b=document.createElement("button");b.textContent=x;
+ if(get(x))b.className="sel";b.onclick=()=>{set(x);chips(id,arr,get,set);refresh(true)};el.appendChild(b)})}
+function drawChips(){
+ chips("langChips",LANGS,x=>L(x)===S.lang,x=>S.lang=L(x));
+ chips("genreChips",GENRES,x=>x===S.genre,x=>S.genre=x);
+ const m=$("manChips");m.innerHTML="";Object.keys(EMO).forEach(k=>{const b=document.createElement("button");b.textContent=EMO[k].e+" "+k;
+  b.onclick=()=>setEmotion(k,1,"manual");m.appendChild(b)})}
+// ---------- emotion display ----------
+function setEmotion(k,c,src){
+ const changed=k!==S.emo||!S.hist.length;S.emo=k;S.conf=c;
+ document.documentElement.style.setProperty("--ac",EMO[k].c);
+ $("emoji").textContent=EMO[k].e;$("emoName").textContent=k.toUpperCase()+(src==="manual"?" (manual)":src==="photo"?" (photo)":"");
+ $("conf").style.width=Math.round(c*100)+"%";$("confTxt").textContent=Math.round(c*100)+"%";
+ $("msg").textContent=EMO[k].m;$("quote").textContent="“"+EMO[k].q+"”";
+ if(changed){$("emoji").classList.remove("pop");void $("emoji").offsetWidth;$("emoji").classList.add("pop");logMood(k,c,src);refresh(true)}}
+function logMood(k,c,src){const t=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});S.hist.push({t,k,c,src});drawHist()}
+function drawHist(){
+ $("tl").innerHTML=S.hist.map(h=>`<div title="${h.k}" style="height:${Math.max(22,h.c*100)}%">${EMO[h.k].e}</div>`).join("");
+ $("hist").innerHTML=S.hist.slice().reverse().map(h=>`${h.t} — ${EMO[h.k].e} ${h.k} — ${Math.round(h.c*100)}%${h.src!=="camera"?" ("+h.src+")":""}`).join("<br>");
+ const n={};S.hist.forEach(h=>n[h.k]=(n[h.k]||0)+1);
+ const top=Object.entries(n).sort((a,b)=>b[1]-a[1])[0];
+ $("stats").innerHTML=S.hist.length?`<span class="pill">Moods logged: ${S.hist.length}</span><span class="pill">Most common: ${EMO[top[0]].e} ${top[0]}</span><span class="pill">❤️ Likes: ${S.liked.size}</span><span class="pill">⏭ Skips: ${S.skips||0}</span>`:'<span class="note">No moods logged yet.</span>'}
+// ---------- recommendation engine ----------
+function refresh(){
+ const langs=S.lang==="Mix"?["Hindi","English","Punjabi","Haryanvi"]:[S.lang];
+ const g=S.genre==="All"?"":S.genre;
+ const c=[];
+ CATS[S.emo].forEach(cat=>langs.forEach(lg=>{
+  const lead=S.lang==="Mix"?"mixed hindi english punjabi":lg;
+  const q=`${lead} ${S.emo} ${cat} ${g} songs`.replace(/\s+/g," ").trim().toLowerCase();
+  c.push({title:`${cat} ${S.emo} songs`,artist:(g||"All genres")+" • YouTube search",lang:lg,genre:g||"All",cat,q,
+   s:(S.w["c:"+cat]||0)+(S.w["l:"+lg]||0)+(S.w["g:"+(g||"All")]||0)+(S.conf>=.75?.3:0)+Math.random()*.4})}));
+ c.sort((a,b)=>b.s-a.s);S.recs=c.slice(0,8);S.idx=0;draw()}
+function draw(){
+ const r=S.recs[S.idx];
+ if(r){$("pTitle").textContent=r.title;$("pArtist").textContent=r.artist;
+  $("pMeta").textContent=`${EMO[S.emo].e} ${S.emo} • ${S.lang} • ${r.genre} • ${r.cat}`;$("art").textContent=EMO[S.emo].e}
+ const h=S.recs.slice(0,4).map((x,i)=>row(x,i)).join("");$("recs").innerHTML=h;$("foryou").innerHTML=h;drawHist()}
+function row(x,i){return `<div class="rec"><div class="t"><b>${x.title}</b><small>${x.lang} • ${x.genre} • ${x.cat} • ${S.emo}</small></div>
+ <button onclick="pick(${i})">🔍 Search</button><button class="${S.liked.has(x.q)?"liked":""}" onclick="likeAt(${i})">❤️</button></div>`}
+function pick(i){S.idx=i;draw();openYT()}
+function step(d){if(!S.recs.length)return;S.idx=(S.idx+d+S.recs.length)%S.recs.length;draw()}
+function bump(x,d){["c:"+x.cat,"l:"+x.lang,"g:"+x.genre].forEach(k=>S.w[k]=(S.w[k]||0)+d)}
+function likeAt(i){const x=S.recs[i];if(!x)return;S.liked.add(x.q);bump(x,2);const keep=x.q;refresh();draw()}
+function like(){likeAt(S.idx)}
+function skip(){const x=S.recs[S.idx];if(!x)return;S.skips=(S.skips||0)+1;bump(x,-1);S.recs.splice(S.idx,1);S.idx=0;S.recs.length<3?refresh():draw()}
+function openYT(){const x=S.recs[S.idx];if(!x)return;
+ window.open("https://www.youtube.com/results?search_query="+encodeURIComponent(x.q),"_blank","noopener");
+ $("pNote").textContent="Opened a YouTube search for “"+x.q+"”. Playback happens on YouTube, not here."}
+function brave(){const x=S.recs[S.idx];window.open("https://search.brave.com/search?q="+encodeURIComponent(x?x.q+" music":`${S.lang} ${S.emo} songs music`),"_blank","noopener")}
+// ---------- camera + detection ----------
+const LIBS=["https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js","https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js"];
+const MODELS=[MODEL_URL,"https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights","./weights"];
+S.facing="user";
+function st(t){$("status").textContent=t}
+function bd(t){$("badge").textContent=t}
+function addScript(u){return new Promise((r,j)=>{const e=document.createElement("script");e.src=u;e.onload=r;e.onerror=j;document.head.appendChild(e)})}
+async function ensureLib(){if(window.faceapi)return true;for(const u of LIBS){try{await addScript(u);if(window.faceapi)return true}catch(e){}}return false}
+async function loadModel(){
+ if(S.model)return true;
+ st("Loading emotion model…");bd("Loading model…");
+ if(!await ensureLib())return false;
+ for(const u of MODELS){try{
+  await faceapi.nets.tinyFaceDetector.loadFromUri(u);await faceapi.nets.faceExpressionNet.loadFromUri(u);
+  try{await faceapi.nets.faceLandmark68TinyNet.loadFromUri(u);S.lm=true}catch(e){S.lm=false}
+  S.model=true;return true}catch(e){}}
+ return false}
+async function startCam(){
+ if(S.stream)return;
+ if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){st("The camera needs a secure https:// link and a modern browser. Open the GitHub Pages link in Chrome, or use Attach photo.");return}
+ st("Requesting camera permission… tap Allow.");bd("Waiting for permission");
+ const v=$("cam");
+ try{
+  try{S.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:S.facing,width:{ideal:640},height:{ideal:480}}})}
+  catch(e){if(e.name==="NotAllowedError"||e.name==="NotReadableError")throw e;S.stream=await navigator.mediaDevices.getUserMedia({video:true})}
+  v.srcObject=S.stream;
+  await new Promise(r=>{if(v.readyState>=1)r();else v.onloadedmetadata=r});
+  try{await v.play()}catch(e){}
+  v.style.aspectRatio=v.videoWidth+"/"+v.videoHeight;
+ }catch(e){if(S.stream)S.stream.getTracks().forEach(t=>t.stop());S.stream=null;bd("Camera off");
+  st(e.name==="NotAllowedError"?"Camera permission denied. Tap the lock icon in the address bar, allow Camera, then press Start Camera.":
+     e.name==="NotReadableError"?"The camera is being used by another app or tab. Close it and try again.":
+     e.name==="NotFoundError"||e.name==="OverconstrainedError"?"No camera found. Use Attach photo or the manual mood buttons.":"Couldn’t start the camera. Use Attach photo or the manual mood buttons.");return}
+ if(!await loadModel()){bd("Manual mode");st(navigator.onLine?"Camera is on, but the emotion model couldn’t load. Pick your mood manually.":"You appear to be offline. Pick your mood manually.");return}
+ st("Scanning face…");bd("Scanning face…");S.buf=[];clearInterval(S.timer);S.timer=setInterval(analyse,450)}
+function paint(f){
+ const c=$("ov"),v=$("cam"),x=c.getContext("2d");c.width=v.videoWidth||640;c.height=v.videoHeight||480;x.clearRect(0,0,c.width,c.height);
+ if(!f)return;const col=EMO[S.emo].c;x.fillStyle=col;x.strokeStyle=col;
+ if(f.landmarks){f.landmarks.positions.forEach(p=>{x.beginPath();x.arc(p.x,p.y,2.2,0,7);x.fill()})}
+ else{const b=f.detection.box;x.lineWidth=3;x.strokeRect(b.x,b.y,b.width,b.height)}}
+async function analyse(){
+ const v=$("cam");if(!S.stream||v.readyState<2||S.busy)return;S.busy=true;
+ try{const o=new faceapi.TinyFaceDetectorOptions({inputSize:224,scoreThreshold:.5});
+  let q=faceapi.detectAllFaces(v,o);if(S.lm)q=q.withFaceLandmarks(true);
+  const all=await q.withFaceExpressions();
+  if(!S.stream)return;
+  if(!all.length){paint(null);bd("No face");st("No face detected. Please position your face inside the camera frame.");S.buf=[];return}
+  const f=all.slice().sort((a,b)=>b.detection.box.area-a.detection.box.area)[0];
+  paint(f);bd(all.length>1?"Multiple faces":"Face detected");
+  st(all.length>1?"Multiple faces detected — using the largest one.":"Face detected • Analyzing emotion…");
+  const top=Object.entries(f.expressions).sort((a,b)=>b[1]-a[1])[0];
+  S.buf.push({k:FA[top[0]],c:top[1]});if(S.buf.length>8)S.buf.shift();
+  if(S.buf.length<4)return;
+  const n={};S.buf.forEach(b=>{n[b.k]=n[b.k]||{c:0,s:0};n[b.k].c++;n[b.k].s+=b.c});
+  const [k,d]=Object.entries(n).sort((a,b)=>b[1].c-a[1].c)[0],avg=d.s/d.c;
+  if(d.c>=Math.ceil(S.buf.length*.6)&&avg>=.55){setEmotion(k,avg,"camera");if(all.length===1){st("Emotion detected");bd("Emotion detected")}}
+  else st("Emotion confidence is low. Please face the camera for a moment.")
+ }catch(e){st("Analysis hiccup — retrying…")}finally{S.busy=false}}
+function stopCam(){clearInterval(S.timer);S.timer=null;if(S.stream){S.stream.getTracks().forEach(t=>t.stop());S.stream=null}
+ $("cam").srcObject=null;S.buf=[];paint(null);bd("Camera off");st("Camera stopped. Processing has ended.")}
+function flip(){S.facing=S.facing==="user"?"environment":"user";if(S.stream){stopCam();startCam()}else st("Camera set to "+(S.facing==="user"?"front":"back")+". Press Start Camera.")}
+async function fromPhoto(inp){
+ const file=inp.files&&inp.files[0];inp.value="";if(!file)return;
+ st("Analysing your photo on this device…");
+ if(!await loadModel()){st("The emotion model couldn’t load. Pick your mood manually.");return}
+ const url=URL.createObjectURL(file),img=new Image();
+ try{await new Promise((r,j)=>{img.onload=r;img.onerror=j;img.src=url});
+  const all=await faceapi.detectAllFaces(img,new faceapi.TinyFaceDetectorOptions({inputSize:416,scoreThreshold:.4})).withFaceExpressions();
+  if(!all.length){st("No face found in that photo. Try a clearer, front-facing picture.");return}
+  const f=all.slice().sort((a,b)=>b.detection.box.area-a.detection.box.area)[0];
+  const [k,c]=Object.entries(f.expressions).sort((a,b)=>b[1]-a[1])[0];
+  setEmotion(FA[k],c,"photo");st(all.length>1?"Photo analysed (largest face used). Nothing was uploaded or saved.":"Photo analysed. Nothing was uploaded or saved.")
+ }catch(e){st("Couldn’t read that photo.")}finally{URL.revokeObjectURL(url)}}
+// ---------- shortcuts ----------
+addEventListener("keydown",e=>{if(e.target.tagName==="INPUT"||location.hash!=="#app")return;
+ const k=e.key.toLowerCase();k==="n"?step(1):k==="p"?step(-1):k==="l"?like():k==="s"?skip():k==="enter"&&openYT()});
+addEventListener("offline",()=>st("You’re offline. The camera still works; music links need internet."));
+// ---------- init ----------
+drawChips();refresh();route();
+</script></body></html>
